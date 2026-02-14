@@ -15,14 +15,7 @@ const editedPost = reactive({
 });
 
 const storePost = () => {
-  if (post.title === '') {
-    errors.value.push('The title field is required!');
-  }
-  if (post.message === '') {
-    errors.value.push('The message field is required!');
-  }
-
-  if (errors.value.length > 0) return;
+  if (isNotValidated()) return;
 
   posts.value.unshift({
     title: post.title,
@@ -55,6 +48,18 @@ const updatePost = () => {
 
 const deletePost = (post) => {
   posts.value = posts.value.filter((postItem) => postItem !== post);
+};
+
+const isNotValidated = () => {
+  errors.value = [];
+  if (post.title === '') {
+    errors.value.push('The title field is required!');
+  }
+  if (post.message === '') {
+    errors.value.push('The message field is required!');
+  }
+
+  return errors.value.length > 0;
 };
 </script>
 
