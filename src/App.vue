@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 const posts = ref([]);
 const errors = ref([]);
@@ -61,6 +61,10 @@ const isNotValidated = () => {
 
   return errors.value.length > 0;
 };
+
+watch(post, () => {
+  errors.value = [];
+})
 </script>
 
 <template>
