@@ -1,6 +1,6 @@
 <template>
-  <div v-if="isModalOpen" class="modal-overlay">
-    <div class="modal bg-white border border-gray-200 p-4 mb-4">
+  <div v-if="isModalOpen" @click="isModalOpen = false" class="modal-overlay">
+    <div @click.stop class="modal bg-white border border-gray-200 p-4 mb-4">
       <form action="#">
         <div class="mb-4">
           <input v-model="editedPost.title" class="p-4 border border-gray-200 w-full" type="text"
