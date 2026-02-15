@@ -1,45 +1,3 @@
-<template>
-  <div v-if="isModalOpen" @click="isModalOpen = false" class="modal-overlay">
-    <div @click.stop class="modal bg-white border border-gray-200 p-4 mb-4">
-      <form action="#">
-        <div class="mb-4">
-          <input v-model="editedPost.title" class="p-4 border border-gray-200 w-full" type="text" placeholder="Title..." />
-        </div>
-        <div class="mb-4">
-          <textarea v-model="editedPost.message" class="p-4 border border-gray-200 w-full min-h-20" placeholder="Message..."></textarea>
-        </div>
-        <div>
-          <a @click.prevent="updatePost" href="#" class="inline-block px-3 py-2 bg-sky-600 border border-sky-700 text-white">Update post</a>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="w-1/2 mx-auto p-4">
-    <div class="bg-white border border-gray-200 p-4 mb-4">
-      <form action="">
-        <div class="mb-4">
-          <input v-model="post.title" class="p-4 border border-gray-200 w-full" type="text" placeholder="Title..." />
-        </div>
-        <div class="mb-4">
-          <textarea v-model="post.message" class="p-4 border border-gray-200 w-full min-h-20" placeholder="Message..."></textarea>
-        </div>
-        <div v-if="errors.length > 0" class="mb-4">
-          <div v-for="error in errors" class="text-red-600">
-            {{ error }}
-          </div>
-        </div>
-        <div>
-          <a @click.prevent="storePost" href="#" class="inline-block px-3 py-2 bg-sky-600 border border-sky-700 text-white">Store post</a>
-        </div>
-      </form>
-    </div>
-    <div>
-      <PostItem v-for="post in posts" />
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { reactive, ref, watch } from 'vue';
 import PostItem from './components/post/PostItem.vue';
@@ -109,6 +67,48 @@ watch(post, () => {
   errors.value = [];
 });
 </script>
+
+<template>
+  <div v-if="isModalOpen" @click="isModalOpen = false" class="modal-overlay">
+    <div @click.stop class="modal bg-white border border-gray-200 p-4 mb-4">
+      <form action="#">
+        <div class="mb-4">
+          <input v-model="editedPost.title" class="p-4 border border-gray-200 w-full" type="text" placeholder="Title..." />
+        </div>
+        <div class="mb-4">
+          <textarea v-model="editedPost.message" class="p-4 border border-gray-200 w-full min-h-20" placeholder="Message..."></textarea>
+        </div>
+        <div>
+          <a @click.prevent="updatePost" href="#" class="inline-block px-3 py-2 bg-sky-600 border border-sky-700 text-white">Update post</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="w-1/2 mx-auto p-4">
+    <div class="bg-white border border-gray-200 p-4 mb-4">
+      <form action="">
+        <div class="mb-4">
+          <input v-model="post.title" class="p-4 border border-gray-200 w-full" type="text" placeholder="Title..." />
+        </div>
+        <div class="mb-4">
+          <textarea v-model="post.message" class="p-4 border border-gray-200 w-full min-h-20" placeholder="Message..."></textarea>
+        </div>
+        <div v-if="errors.length > 0" class="mb-4">
+          <div v-for="error in errors" class="text-red-600">
+            {{ error }}
+          </div>
+        </div>
+        <div>
+          <a @click.prevent="storePost" href="#" class="inline-block px-3 py-2 bg-sky-600 border border-sky-700 text-white">Store post</a>
+        </div>
+      </form>
+    </div>
+    <div>
+      <PostItem v-for="post in posts" :post="post" />
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .modal-overlay {

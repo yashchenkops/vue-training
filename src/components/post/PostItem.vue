@@ -1,3 +1,17 @@
+<script setup>
+import { reactive } from 'vue';
+
+const { post } = defineProps({
+  post: {
+    type: Object,
+    required: true,
+  },
+});
+
+const editPost = function (post) {};
+const deletePost = function (post) {};
+</script>
+
 <template>
   <div class="bg-white border border-gray-200 p-4 mb-4 flex items-center justify-between">
     <div>
@@ -36,12 +50,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { reactive } from 'vue';
-
-const post = reactive({});
-
-const editPost = function(post) {};
-const deletePost = function(post) {};
-</script>
