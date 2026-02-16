@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, watch } from 'vue';
+import { provide, reactive, ref, watch } from 'vue';
 import PostItem from './components/post/PostItem.vue';
 
 const posts = ref([]);
@@ -14,6 +14,7 @@ const editedPost = reactive({
   title: '',
   message: '',
 });
+provide('posts', posts)
 
 const storePost = () => {
   if (isNotValidated()) return;
@@ -45,10 +46,6 @@ const updatePost = () => {
     message: editedPost.message,
   });
   isModalOpen.value = false;
-};
-
-const deletePost = (post) => {
-  posts.value = posts.value.filter((postItem) => postItem !== post);
 };
 
 const isNotValidated = () => {
@@ -105,7 +102,7 @@ watch(post, () => {
       </form>
     </div>
     <div>
-      <PostItem @editpost="editPost" @deletepost="deletePost" v-for="post in posts" :post="post" />
+      <PostItem @editpost="editPost" v-for="post in posts" :post="post" />
     </div>
   </div>
 </template>
