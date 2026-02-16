@@ -1,6 +1,4 @@
 <script setup>
-import { reactive } from 'vue';
-
 const { post } = defineProps({
   post: {
     type: Object,
@@ -8,8 +6,15 @@ const { post } = defineProps({
   },
 });
 
-const editPost = function (post) {};
-const deletePost = function (post) {};
+const emits = defineEmits(['deletepost', 'editpost']);
+
+const editPost = (post) => {
+  emits('editpost', post)
+};
+
+const deletePost = (post) => {
+  emits('deletepost', post);
+};
 </script>
 
 <template>

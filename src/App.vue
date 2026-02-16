@@ -105,7 +105,7 @@ watch(post, () => {
       </form>
     </div>
     <div>
-      <PostItem v-for="post in posts" :post="post" />
+      <PostItem @editpost="editPost" @deletepost="deletePost" v-for="post in posts" :post="post" />
     </div>
   </div>
 </template>
