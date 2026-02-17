@@ -1,5 +1,5 @@
 <script setup>
-import { provide, reactive, ref, watch } from 'vue';
+import { computed, provide, reactive, ref, watch } from 'vue';
 import PostItem from './components/post/PostItem.vue';
 
 const posts = ref([]);
@@ -8,13 +8,17 @@ const isModalOpen = ref(false);
 const post = reactive({
   title: '',
   message: '',
+  isFavored: false,
 });
 const editedPost = reactive({
   index: null,
   title: '',
   message: '',
 });
-provide('posts', posts)
+
+const favoredPosts = computed(() => posts.value.filter(postItem => postItem.isFavored === true));
+
+provide('posts', posts);
 
 const storePost = () => {
   if (isNotValidated()) return;
@@ -82,7 +86,7 @@ watch(post, () => {
     </div>
   </div>
 
-  <div class="w-1/2 mx-auto p-4">
+  <div class="max-w-7xl mx-auto p-4">
     <div class="bg-white border border-gray-200 p-4 mb-4">
       <form action="">
         <div class="mb-4">
@@ -101,8 +105,15 @@ watch(post, () => {
         </div>
       </form>
     </div>
-    <div>
-      <PostItem @editpost="editPost" v-for="post in posts" :post="post" />
+    <div class="flex items-start justify-between gap-4">
+      <div class="w-1/2">
+        <h3 class="mb-4">Posts</h3>
+        <PostItem @editpost="editPost" v-for="post in posts" :post="post" />
+      </div>
+      <div class="w-1/2">
+        <h3 class="mb-4">Favored posts</h3>
+        <PostItem @editpost="editPost" v-for="post in favoredPosts" :post="post" />
+      </div>
     </div>
   </div>
 </template>
