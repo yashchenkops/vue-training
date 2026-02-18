@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import PostDelete from './PostDelete.vue';
 
 const { post } = defineProps({
@@ -14,13 +15,15 @@ const editPost = (post) => {
   emits('editpost', post);
 };
 
+const postClass = computed(() => post.isFavored ? 'border-sky-400' : 'border-gray-200')
+
 const deletePost = (post) => {
   emits('deletepost', post);
 };
 </script>
 
 <template>
-  <div class="bg-white border border-gray-200 p-4 mb-4 flex items-center justify-between">
+  <div :class="[postClass, 'bg-white border p-4 mb-4 flex items-center justify-between']">
     <div>
       <h3 class="text-lg text-gray-700">{{ post.title }}</h3>
       <p class="text-sm text-gray-500">{{ post.message }}</p>
@@ -44,10 +47,10 @@ const deletePost = (post) => {
       <button @click="post.isFavored = !post.isFavored" type="button" class="cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          fill="none"
+          :fill="post.isFavored ? 'oklch(85.2% 0.199 91.936)' : 'none'"
           viewBox="0 0 24 24"
           stroke-width="1.5"
-          stroke="currentColor"
+          :stroke="post.isFavored ? 'oklch(85.2% 0.199 91.936)' : 'currentColor'"
           class="size-5 text-sky-600">
           <path
             stroke-linecap="round"
