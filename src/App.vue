@@ -1,72 +1,79 @@
 <script setup>
-import { computed, provide, reactive, ref, watch } from 'vue';
-import PostItem from './components/post/PostItem.vue';
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue'
+import PostItem from './components/post/PostItem.vue'
 
-const posts = ref([]);
-const errors = ref([]);
-const isModalOpen = ref(false);
+onMounted(() => {
+  console.log(inputImage.value)
+})
+
+const posts = ref([])
+const errors = ref([])
+const isModalOpen = ref(false)
+const inputImage = ref(null)
 const post = reactive({
   title: '',
   message: '',
   isFavored: false,
-});
+})
 const editedPost = reactive({
   index: null,
   title: '',
   message: '',
-});
+})
 
-const favoredPosts = computed(() => posts.value.filter(postItem => postItem.isFavored === true));
+const favoredPosts = computed(() => posts.value.filter((postItem) => postItem.isFavored === true))
 
-provide('posts', posts);
+provide('posts', posts)
 
 const storePost = () => {
-  if (isNotValidated()) return;
+  if (isNotValidated()) return
 
   posts.value.unshift({
     title: post.title,
     message: post.message,
-  });
+  })
 
   Object.assign(post, {
     title: '',
     message: '',
-  });
-};
+  })
+
+  inputImage.value.value = null
+}
 
 const editPost = (post) => {
-  isModalOpen.value = true;
+  isModalOpen.value = true
 
   Object.assign(editedPost, {
     index: posts.value.indexOf(post),
     title: post.title,
     message: post.message,
-  });
-};
+  })
+}
 
 const updatePost = () => {
   Object.assign(posts.value[editedPost.index], {
     title: editedPost.title,
     message: editedPost.message,
-  });
-  isModalOpen.value = false;
-};
+  })
+  isModalOpen.value = false
+}
 
 const isNotValidated = () => {
-  errors.value = [];
+  errors.value = []
   if (post.title === '') {
-    errors.value.push('The title field is required!');
+    errors.value.push('The title field is required!')
   }
   if (post.message === '') {
-    errors.value.push('The message field is required!');
+    errors.value.push('The message field is required!')
   }
 
-  return errors.value.length > 0;
-};
+  return errors.value.length > 0
+}
 
 watch(post, () => {
-  errors.value = [];
-});
+  errors.value = []
+})
 </script>
 
 <template>
@@ -90,10 +97,13 @@ watch(post, () => {
     <div class="bg-white border border-gray-200 p-4 mb-4">
       <form action="">
         <div class="mb-4">
-          <input v-model="post.title" class="p-4 border border-gray-200 w-full" type="text" placeholder="Title..." />
+          <input type="text" v-model="post.title" class="p-4 border border-gray-200 w-full" placeholder="Title..." />
         </div>
         <div class="mb-4">
-          <textarea v-model="post.message" class="p-4 border border-gray-200 w-full min-h-20" placeholder="Message..."></textarea>
+          <input ref="inputImage" type="file" class="p-4 border border-gray-200 w-full" placeholder="Title..." />
+        </div>
+        <div class="mb-4">
+          <textarea placeholder="Message..." v-model="post.message" class="p-4 border border-gray-200 w-full min-h-20"></textarea>
         </div>
         <div v-if="errors.length > 0" class="mb-4">
           <div v-for="error in errors" class="text-red-600">
