@@ -20,10 +20,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="post in posts">
-              <td class="bg-white border-b border-gray-200 text-left p-2">{{ post.id }}</td>
-              <td class="bg-white border-b border-gray-200 text-left p-2">
-                <router-link :to="{ name: 'admin.posts.show', params: { id: post.id } }">{{ post.title }}</router-link>
+            <tr v-for="post in postStore.posts">
+              <td class="bg-white border-b border-gray-200 text-left">
+                <router-link class="p-2 block" :to="{ name: 'admin.posts.show', params: { id: post.id } }">{{ post.id }}</router-link>
+              </td>
+              <td class="bg-white border-b border-gray-200 text-left">
+                <router-link class="p-2 block" :to="{ name: 'admin.posts.show', params: { id: post.id } }">{{ post.title }}</router-link>
               </td>
               <td class="bg-white border-b border-gray-200 text-left p-2">{{ post.content }}</td>
               <td class="bg-white border-b border-gray-200 text-left p-2">
@@ -52,7 +54,7 @@
                       stroke-width="1.5"
                       stroke="currentColor"
                       class="size-4 text-red-600 cursor-pointer"
-                      @click="deletePost(post)">
+                      @click="postStore.deletePost(post)">
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -70,7 +72,7 @@
 </template>
 
 <script setup>
-import axios from 'axios'
+import { usePostStore } from '@/stores/post'
 import { onMounted, ref } from 'vue'
 
 defineOptions({
@@ -78,22 +80,11 @@ defineOptions({
 })
 
 onMounted(() => {
-  getPosts()
+  postStore.getPosts()
 })
 
-const posts = ref([])
+const postStore = usePostStore()
 
-const getPosts = function () {
-  axios.get('http://localhost:3000/posts').then((res) => {
-    posts.value = res.data
-  })
-}
-
-const deletePost = function (post) {
-  axios.delete(`http://localhost:3000/posts/${post.id}`).then((res) => {
-    posts.value = posts.value.filter((postItem) => postItem !== post)
-  })
-}
 </script>
 
 <style scoped></style>
